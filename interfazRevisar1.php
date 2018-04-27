@@ -243,7 +243,7 @@ include('connection.php');
             <table border="solid">
                 
                 <?php
-                $sql =  "SELECT SUM(monto_total) FROM sl_dte WHERE n_operacion = 1";
+                $sql =  "SELECT SUM(monto_total) FROM sl_grand_table WHERE n_operacion = 3213";
                 $response = mysqli_query($conn,$sql);
                 while ($row = mysqli_fetch_assoc($response)) {
                     $totalCot = $row["SUM(monto_total)"];
@@ -300,7 +300,7 @@ include('connection.php');
         </div>
         <!-- Tabla por cada rut de receptor -->
         <?php 
-        $sql = "SELECT DISTINCT rut_receptor from sl_dte";
+        $sql = "SELECT DISTINCT rut_receptor from sl_grand_table WHERE n_operacion = 3213";
         $c = 0;
         $response = mysqli_query($conn,$sql);
         $rutEmpresas = [];
@@ -391,13 +391,13 @@ include('connection.php');
                 
             
             <?php
-                $sql = 'SELECT * FROM sl_dte WHERE n_operacion = 1 and rut_receptor= \''.$rutEmpresas[$i].'\'';
+                $sql = 'SELECT * FROM sl_grand_table WHERE n_operacion = 3213 and rut_receptor= \''.$rutEmpresas[$i].'\'';
                 $response = mysqli_query($conn,$sql);
                 if (mysqli_num_rows($response) > 0) {
                     while ($row = mysqli_fetch_assoc($response)) {
                         echo '<tr>
-                        <td>'.$row["n_DTE"].'</td>
-                        <td>'.$row["tipo_DTE"].'</td>
+                        <td>'.$row["nro_dte"].'</td>
+                        <td>'.$row["tipo_dte"].'</td>
                         <td>'.$row["folio"].'</td>
                         
                         <td>'.$row["fecha_emision"].'</td>
@@ -407,17 +407,17 @@ include('connection.php');
                         <td>'.$row["monto_total"].'</td>
                         <td>&nbsp</td>
                         <td>&nbsp</td>
-                        <td><input type="text" oninput="return maximo('.$row["n_DTE"].','.$row["monto_total"].')" onKeyPress="return soloNumeros(event)" onChange="guardarValor('.$row["n_DTE"].')" onKeyUp="montLiquid()" id="finan'.$row["n_DTE"].'" name="monto_financiado" value="'.$row["monto_total"].'" style="width: 140;" readOnly></td>
+                        <td><input type="text" oninput="return maximo('.$row["nro_dte"].','.$row["monto_total"].')" onKeyPress="return soloNumeros(event)" onChange="guardarValor('.$row["nro_dte"].')" onKeyUp="montLiquid()" id="finan'.$row["nro_dte"].'" name="monto_financiado" value="'.$row["monto_total"].'" style="width: 140;" readOnly></td>
                         <td>
                         <label class="radio-inline">
-                        <input type="radio" id="compraSi'.$row["n_DTE"].'" onclick="enabl('.$row["n_DTE"].','.$row["monto_total"].')" name="compra'.$row["n_DTE"].'" value="Si" checked>SI
+                        <input type="radio" id="compraSi'.$row["nro_dte"].'" onclick="enabl('.$row["nro_dte"].','.$row["monto_total"].')" name="compra'.$row["nro_dte"].'" value="Si" checked>SI
                         </label>
                         <label class="radio-inline" id="radioCompraNo">
-                        <input type="radio" id="compraNo'.$row["n_DTE"].'" onclick="disabl('.$row["n_DTE"].')" name="compra'.$row["n_DTE"].'" value="No">NO
+                        <input type="radio" id="compraNo'.$row["nro_dte"].'" onclick="disabl('.$row["nro_dte"].')" name="compra'.$row["nro_dte"].'" value="No">NO
                         </label>
                         </td>
-                        <td><textarea name="obs'.$row["n_DTE"].'" id="obs'.$row["n_DTE"].'" cols="20" rows="3" disabled></textarea></td>
-                        <input type="hidden" name="DTE'.$row["n_DTE"].'" id="DTE'.$row["n_DTE"].'" value="'.$row["monto_total"].'"/>
+                        <td><textarea name="obs'.$row["nro_dte"].'" id="obs'.$row["nro_dte"].'" cols="20" rows="3" disabled></textarea></td>
+                        <input type="hidden" name="DTE'.$row["nro_dte"].'" id="DTE'.$row["nro_dte"].'" value="'.$row["monto_total"].'"/>
                         <td><input type="text" /></td>
                         <td><input type="text" /></td>
                         <td><input type="text" /></td>
