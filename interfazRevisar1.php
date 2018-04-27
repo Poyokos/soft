@@ -91,18 +91,7 @@ include('connection.php');
 
             function guardarValor(id){
                 var valor = document.getElementById('finan'+id).value;
-                console.log(valor);
                 document.getElementById('DTE'+id).value = valor;
-            }
-
-            function alertaEnvio(){
-                if (document.getElementById('estadoAceptar').checked) {
-                    confirm("¿Esta seguro que desea aceptar la cotizacion?, Ésta no podra ser modificada despues");
-                }
-                
-                if (document.getElementById('estadoRechazar').checked) {
-                    confirm("¿Esta seguro que desea rechazar la cotizacion?, Ésta no podra ser modificada despues");
-                }   
             }
                     
             /* tot = tot.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
@@ -223,7 +212,7 @@ include('connection.php');
                 <thead>
                     <tr>
                     <td>
-                            <input type="hidden" name="nOperacion" value="1"/> 
+                            <input type="hidden" name="nOperacion" value="3213"/> 
                             <center><h2>N°Operacion - Rut de la empresa</h2></center>
                             <center><h2>Estado</h2></center>
                             <!-- <center>
@@ -407,21 +396,21 @@ include('connection.php');
                         <td>'.$row["monto_total"].'</td>
                         <td>&nbsp</td>
                         <td>&nbsp</td>
-                        <td><input type="text" oninput="return maximo('.$row["nro_dte"].','.$row["monto_total"].')" onKeyPress="return soloNumeros(event)" onChange="guardarValor('.$row["nro_dte"].')" onKeyUp="montLiquid()" id="finan'.$row["nro_dte"].'" name="monto_financiado" value="'.$row["monto_total"].'" style="width: 140;" readOnly></td>
+                        <td><input type="text" oninput="return maximo('.$row["folio"].','.$row["monto_total"].')" onKeyPress="return soloNumeros(event)" onChange="guardarValor('.$row["folio"].')" onKeyUp="montLiquid()" id="finan'.$row["folio"].'" name="monto_financiado" value="'.$row["monto_total"].'" style="width: 140;"></td>
                         <td>
                         <label class="radio-inline">
-                        <input type="radio" id="compraSi'.$row["nro_dte"].'" onclick="enabl('.$row["nro_dte"].','.$row["monto_total"].')" name="compra'.$row["nro_dte"].'" value="Si" checked>SI
+                        <input type="radio" id="compraSi'.$row["folio"].'" onclick="enabl('.$row["folio"].','.$row["monto_total"].')" name="compra'.$row["folio"].'" value="Si" checked>SI
                         </label>
                         <label class="radio-inline" id="radioCompraNo">
-                        <input type="radio" id="compraNo'.$row["nro_dte"].'" onclick="disabl('.$row["nro_dte"].')" name="compra'.$row["nro_dte"].'" value="No">NO
+                        <input type="radio" id="compraNo'.$row["folio"].'" onclick="disabl('.$row["folio"].')" name="compra'.$row["folio"].'" value="No">NO
                         </label>
                         </td>
-                        <td><textarea name="obs'.$row["nro_dte"].'" id="obs'.$row["nro_dte"].'" cols="20" rows="3" disabled></textarea></td>
-                        <input type="hidden" name="DTE'.$row["nro_dte"].'" id="DTE'.$row["nro_dte"].'" value="'.$row["monto_total"].'"/>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
+                        <td><textarea name="obs'.$row["folio"].'" id="obs'.$row["folio"].'" cols="20" rows="3" disabled></textarea></td>
+                        <input type="hidden" name="DTE'.$row["folio"].'" id="DTE'.$row["folio"].'" value="'.$row["monto_total"].'"/>
+                        <td><input type="text" name="difPre'.$row["folio"].'" id="difPre'.$row["folio"].'" /></td>
+                        <td><input type="text" name="gasCom'.$row["folio"].'" id="gasCom'.$row["folio"].'" /></td>
+                        <td><input type="text" name="monIVA'.$row["folio"].'" id="monIVA'.$row["folio"].'" /></td>
+                        <td><input type="text" name="costFin'.$row["folio"].'" id="costFin'.$row["folio"].'" /></td>
                         </tr>';
                     }
                     echo '</br>';
