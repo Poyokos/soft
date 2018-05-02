@@ -22,192 +22,8 @@ include('connection.php');
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  -->
-        <script type="text/javascript">
-
-            $(document).ready(function() {
-                montLiquid();
-                /* $("#trObs").hide(); */
-                $("#difPrecio, #gastoCom, #montoIVA, #costoFinan").on("keyup", function() {
-                    montLiquid();
-                });
-
-                $("#btnSubmit").click(function(){
-                    alert("Simulacion guardada");
-                });
-                
-                $("#estadoRechazar").click(function(){
-                    $(":text, #fechaVen, :radio").prop("disabled",true);
-                    $("#estadoAceptar").prop("disabled",false);
-                    $("#estadoRechazar").prop("disabled",false);
-                    $("#trObs").show();
-                })
-
-                $("#estadoAceptar").click(function(){
-                    $(":text, #fechaVen, :radio").prop("disabled",false);
-                    $("#estadoAceptar").prop("disabled",false);
-                    $("#estadoRechazar").prop("disabled",false);
-                    $("#trObs").hide();
-                })
-                
-                $('.btnModificarParam').click(function(){
-                var valores = [];
-                var llaves = [];
-                var id = $(this).attr('id');
-                var element = document.getElementsByName('parametros'+id);
-                var rut = $("#rutEmpresa"+id).val();
-                for(var i=0;i<element.length;i++){
-                    valores.push(element[i].value);
-                    llaves.push(element[i].id);
-                }
-                /* for(var i=0;i<element.length;i++){
-                    arr[element[i].id] = element[i].value;
-                } */
-                //console.log(arr);
-                //var jsonString = JSON.stringify(arr);
-                //console.log(jsonString);
-                //console.log(jsonString);
-                /* var id = $(this).attr('id');
-                var rut = $("#rutEmpresa"+id).val();
-                var p1 = $("#param1"+id).val();
-                var p2 = $("#param2"+id).val();
-                var p3 = $("#param3"+id).val();
-                var p4 = $("#param4"+id).val(); */
-                $.ajax({
-                url: 'modParam.php',
-                type: 'POST',
-                data: {
-                    'rut': rut,
-                    'value': valores,
-                    'key': llaves
-                },
-                success: function(response){
-                    alert(response);
-                    location.reload();
-                }
-                });
-                });
-                
-            });
-
-            function guardarParam(){
-                
-            }
-
-            function guardarValor(id){
-                var valor = document.getElementById('finan'+id).value;
-                document.getElementById('DTE'+id).value = valor;
-            }
-                    
-            /* tot = tot.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
-                tot = tot.split('').reverse().join('').replace(/^[\.]/, ''); */
-            
-            function montLiquid(){
-                var arr = document.getElementsByName('monto_financiado');
-                var tot=0;
-                for(var i=0;i<arr.length;i++){
-                    if(parseInt(arr[i].value))
-                        tot += parseInt(arr[i].value);
-                }
-
-                var com = document.getElementById('difPrecio').value;
-                var gas = document.getElementById('gastoCom').value;
-                var mont = document.getElementById('montoIVA').value;
-                var cost = document.getElementById('costoFinan').value;
-                
-                total = Number(tot) - (Number(com)+Number(gas)+Number(mont)+Number(cost));
-
-                document.getElementById('monFin').value = tot;
-                document.getElementById('montLiquido').value = total;           
-            }
-            
-
-            function disabl(valor){
-                var value = valor;
-                document.getElementById('finan'+valor).value = "";
-                document.getElementById('obs'+valor).disabled = false;
-                document.getElementById('finan'+valor).disabled = true;
-                montLiquid();
-            }
-
-            function enabl(valor,monto){
-                var value = valor;
-                document.getElementById('obs'+valor).value = "";
-                document.getElementById('obs'+valor).disabled = true;
-                document.getElementById('finan'+valor).disabled = false;
-                document.getElementById('finan'+valor).value = monto;
-                montLiquid();
-            }
-            
-            function soloNumeros(e){
-                var key = window.Event ? e.which : e.keyCode
-                return (key >= 48 && key <= 57)
-            }
-            
-            function maximo(input,max){
-                var valor = document.getElementById('finan'+input).value;
-                var tope = max;
-                if (valor > tope) {
-                    alert("El valor a financiar no puede ser mayor al monto total");
-                    var tam = valor.length;
-                    valor = valor.substr(0,valor.length-1);
-                    document.getElementById('finan'+input).value = valor;
-                }
-                /* var key = window.Event ? e.which : e.keyCode
-                return (key >= 48 && key <= 57) */
-            }
-
-         </script>
-           <style>  
-           .file_drag_area  
-           {  
-                width:400px;  
-                height:100px;  
-                border:2px dashed #ccc;  
-                line-height:100px;  
-                text-align:center;  
-                font-size:24px;  
-           }  
-           .file_drag_over{  
-                color:#000;  
-                border-color:#000;  
-           }  
-           
-           table {
-                border-collapse: collapse;
-                width: 100%;
-            }
-
-            th, td {
-                text-align: left;
-                padding: 8px;
-            }
-
-            tr:nth-child(even){background-color: #f2f2f2 }
-
-            th {
-                background-color: #CD7F1A ;
-                color: white;
-            }
-            
-            #divDnD{
-                display:none;
-            }
-
-            input[type=text]{
-                width: 150px;
-            }
-
-            .param{
-                width: 20px;
-            }
-
-            textarea {
-                resize: none;
-            }
-            
-           </style>  
-           
-
+        <script src="js/main.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
     </head>
     <body>
                 
@@ -310,7 +126,7 @@ include('connection.php');
         $th = mysqli_query($conn,$sql);
         $test = mysqli_query($conn,$sql);
         $tr = mysqli_query($conn,$sql);
-        echo '<th>Rut Receptor</th>'; 
+        echo '<th>Rut Receptor + Nombre Receptor</th>'; 
         while ($row = mysqli_fetch_assoc($th)) {
             echo '<th>'.$row["parametro"].'</th>';
         }
@@ -371,7 +187,6 @@ include('connection.php');
                 <th># Monto Exento</th>
                 <th># Monto Total</th>
                 <th># Monto Retenido</th>
-                <th># Monto Bruto</th>
                 <th>* Monto Financiado</th>
                 <th>¿Aceptar compra?</th>
                 
@@ -399,8 +214,7 @@ include('connection.php');
                         <td>'.$row["monto_exento"].'</td>
                         <td>'.$row["monto_total"].'</td>
                         <td>&nbsp</td>
-                        <td>&nbsp</td>
-                        <td><input type="text" oninput="return maximo('.$row["folio"].','.$row["monto_total"].')" onKeyPress="return soloNumeros(event)" onChange="guardarValor('.$row["folio"].')" onKeyUp="montLiquid()" id="finan'.$row["folio"].'" name="monto_financiado" value="'.$row["monto_total"].'" style="width: 140;"></td>
+                        <td><input class="'.$row["folio"].'" type="text" oninput="return maximo('.$row["folio"].','.$row["monto_total"].')" onKeyPress="return soloNumeros(event)" onChange="guardarValor('.$row["folio"].')" onKeyUp="montLiquid()" id="finan'.$row["folio"].'" name="monto_financiado" value="'.$row["monto_total"].'" style="width: 140;"></td>
                         <td>
                         <label class="radio-inline">
                         <input type="radio" id="compraSi'.$row["folio"].'" onclick="enabl('.$row["folio"].','.$row["monto_total"].')" name="compra'.$row["folio"].'" value="Si" checked>SI
