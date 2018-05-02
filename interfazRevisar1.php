@@ -30,6 +30,10 @@ include('connection.php');
                 $("#difPrecio, #gastoCom, #montoIVA, #costoFinan").on("keyup", function() {
                     montLiquid();
                 });
+
+                $("#btnSubmit").click(function(){
+                    alert("Simulacion guardada");
+                });
                 
                 $("#estadoRechazar").click(function(){
                     $(":text, #fechaVen, :radio").prop("disabled",true);
@@ -279,7 +283,7 @@ include('connection.php');
                 </tr>
 
                 <tr>
-                    <td align="right"><input type="submit" value="Guardar Simulacion"/></td>
+                    <td align="right"><input type="submit" id="btnSubmit" name="btnSubmit" value="Guardar Simulacion"/></td>
                 </tr>
                     
             </table>
@@ -407,10 +411,10 @@ include('connection.php');
                         </td>
                         <td><textarea name="obs'.$row["folio"].'" id="obs'.$row["folio"].'" cols="20" rows="3" disabled></textarea></td>
                         <input type="hidden" name="DTE'.$row["folio"].'" id="DTE'.$row["folio"].'" value="'.$row["monto_total"].'"/>
-                        <td><input type="text" name="difPre'.$row["folio"].'" id="difPre'.$row["folio"].'" /></td>
-                        <td><input type="text" name="gasCom'.$row["folio"].'" id="gasCom'.$row["folio"].'" /></td>
-                        <td><input type="text" name="monIVA'.$row["folio"].'" id="monIVA'.$row["folio"].'" /></td>
-                        <td><input type="text" name="costFin'.$row["folio"].'" id="costFin'.$row["folio"].'" /></td>
+                        <td><input type="text" name="difPre'.$row["folio"].'" id="difPre'.$row["folio"].'" value="'.$row["diferencia_precio_dte"].'"/></td>
+                        <td><input type="text" name="gasCom'.$row["folio"].'" id="gasCom'.$row["folio"].'" value="'.$row["gasto_comision_dte"].'"/></td>
+                        <td><input type="text" name="monIVA'.$row["folio"].'" id="monIVA'.$row["folio"].'" value="'.$row["monto_iva_dte"].'"/></td>
+                        <td><input type="text" name="costFin'.$row["folio"].'" id="costFin'.$row["folio"].'" value="'.$row["costo_finan_dte"].'"/></td>
                         </tr>';
                     }
                     echo '</br>';
