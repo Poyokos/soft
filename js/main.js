@@ -64,10 +64,6 @@ $(document).ready(function() {
     
 });
 
-function guardarParam(){
-    
-}
-
 function guardarValor(id){
     var valor = document.getElementById('finan'+id).value;
     document.getElementById('DTE'+id).value = valor;
@@ -81,7 +77,7 @@ function calcularCotizaccion(){
     var id=0;
     for(var i=0;i<arr.length;i++){
         id = arr[i].className;
-        
+        arr[i].className
     }
 
     /* var com = document.getElementById('difPrecio').value;

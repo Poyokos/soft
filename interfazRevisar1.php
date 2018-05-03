@@ -149,7 +149,7 @@ include('connection.php');
         $emp = mysqli_query($conn,$sql);
           
         /* var_dump($emp); */
-        if (mysqli_num_rows($emp) != 0) {
+        /* if (mysqli_num_rows($emp) != 0) {
             $a = 0;
             while ($row = mysqli_fetch_assoc($emp)) {
                 echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
@@ -164,6 +164,28 @@ include('connection.php');
             while ($row = mysqli_fetch_assoc($tr)) {
                 echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
             }
+        } */
+        $parametro = [];
+        if (mysqli_num_rows($emp) != 0) {
+            $a = 0;
+            while ($row = mysqli_fetch_assoc($emp)) {
+                echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
+                $parametro[$row["parametro"]]=$row["valor"];
+                $a++;
+            }
+
+            for ($x=$a; $x <count($param) ; $x++) { 
+                echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$param[$x].'" value="'.$valor[$x].'" /></td>';
+            }
+
+            var_dump($parametro);
+        }else{
+            while ($row = mysqli_fetch_assoc($tr)) {
+                echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
+                $parametro[$row["parametro"]]=$row["valor"];
+                
+            }
+            var_dump($parametro);
         }
 
        /*  while ($row = mysqli_fetch_assoc($tr)) {
@@ -176,28 +198,23 @@ include('connection.php');
         echo "</tr>";
         ?>
         </tr>
-            
                 <th># N°DTE</th>
                 <th># Tipo DTE</th>
-                <th># Folio</th>
-                
+                <th># Folio</th>              
                 <th># Fecha de Emision</th>
                 <th># Fecha de Pago</th>
                 <th># Monto Neto</th>
                 <th># Monto Exento</th>
                 <th># Monto Total</th>
-                <th># Monto Retenido</th>
-                <th>* Monto Financiado</th>
                 <th>¿Aceptar compra?</th>
-                
                 <th>Observacion</th>
-                
+                <th># Monto Retenido</th>
+                <th>* Monto A Financiar</th>
                 <th>Diferencia de Precio</th>
                 <th>Gastos Y Comisiones</th>
                 <th>Monto de IVA</th>
+                <th>Dias</th>
                 <th>Costo Financiero</th>
-                
-            
             <?php
                 $sql = 'SELECT * FROM sl_grand_table WHERE n_operacion = 3213 and rut_receptor= \''.$rutEmpresas[$i].'\'';
                 $response = mysqli_query($conn,$sql);
@@ -213,8 +230,6 @@ include('connection.php');
                         <td>'.$row["monto_neto"].'</td>
                         <td>'.$row["monto_exento"].'</td>
                         <td>'.$row["monto_total"].'</td>
-                        <td>&nbsp</td>
-                        <td><input class="'.$row["folio"].'" type="text" oninput="return maximo('.$row["folio"].','.$row["monto_total"].')" onKeyPress="return soloNumeros(event)" onChange="guardarValor('.$row["folio"].')" onKeyUp="montLiquid()" id="finan'.$row["folio"].'" name="monto_financiado" value="'.$row["monto_total"].'" style="width: 140;"></td>
                         <td>
                         <label class="radio-inline">
                         <input type="radio" id="compraSi'.$row["folio"].'" onclick="enabl('.$row["folio"].','.$row["monto_total"].')" name="compra'.$row["folio"].'" value="Si" checked>SI
@@ -224,10 +239,13 @@ include('connection.php');
                         </label>
                         </td>
                         <td><textarea name="obs'.$row["folio"].'" id="obs'.$row["folio"].'" cols="20" rows="3" disabled></textarea></td>
+                        <td>'.$row["monto_total"]*((100-$parametro["Retencion"])/100).'</td>
+                        <td>'.$row["monto_total"]*($parametro["Retencion"]/100).'</td>                        
                         <input type="hidden" name="DTE'.$row["folio"].'" id="DTE'.$row["folio"].'" value="'.$row["monto_total"].'"/>
                         <td><input type="text" name="difPre'.$row["folio"].'" id="difPre'.$row["folio"].'" value="'.$row["diferencia_precio_dte"].'"/></td>
                         <td><input type="text" name="gasCom'.$row["folio"].'" id="gasCom'.$row["folio"].'" value="'.$row["gasto_comision_dte"].'"/></td>
                         <td><input type="text" name="monIVA'.$row["folio"].'" id="monIVA'.$row["folio"].'" value="'.$row["monto_iva_dte"].'"/></td>
+                        <td><input type="text" /></td>
                         <td><input type="text" name="costFin'.$row["folio"].'" id="costFin'.$row["folio"].'" value="'.$row["costo_finan_dte"].'"/></td>
                         </tr>';
                     }
