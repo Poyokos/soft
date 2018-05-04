@@ -45,6 +45,7 @@ include('connection.php');
                             </center>
                             </br>
                             <center><input type="submit" id="enviarForm" onClick="alertaEnvio()" value="Enviar Estado Cotizacion"/></center> -->
+                            <button id="btnPrueba">Prueba</button>
                     </td>
                     </tr>       
                 </thead>
@@ -121,115 +122,36 @@ include('connection.php');
 
         <?php for ($i=0; $i < count($rutEmpresas); $i++) { ?>
             <table border="solid">
-        <?php
-        $sql = "Select * from sl_parametro_sistema";
-        $th = mysqli_query($conn,$sql);
-        $test = mysqli_query($conn,$sql);
-        $tr = mysqli_query($conn,$sql);
-        echo '<th>Rut Receptor + Nombre Receptor</th>'; 
-        while ($row = mysqli_fetch_assoc($th)) {
-            echo '<th>'.$row["parametro"].'</th>';
-        }
-        echo "<tr>";
-        echo '<td>'.$rutEmpresas[$i].'</td>';
-
-        $param = [];
-        $valor = [];
-        $f = 0;
-
-        while ($row = mysqli_fetch_assoc($test)) {
-            $valor[$f] = $row["valor"];
-            $param[$f] = $row["parametro"];
-            $f++;
-        }
-
-        //var_dump($arr[3]);
-
-        $sql = 'Select * from sl_parametro_empresa where rut_empresa = \''.$rutEmpresas[$i].'\'';
-        $emp = mysqli_query($conn,$sql);
-          
-        /* var_dump($emp); */
-        /* if (mysqli_num_rows($emp) != 0) {
-            $a = 0;
-            while ($row = mysqli_fetch_assoc($emp)) {
-                echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
-                $a++;
-            }
-
-            for ($x=$a; $x <count($param) ; $x++) { 
-                echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$param[$x].'" value="'.$valor[$x].'" /></td>';
-            }
-
-        }else{
-            while ($row = mysqli_fetch_assoc($tr)) {
-                echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
-            }
-        } */
-        $parametro = [];
-        if (mysqli_num_rows($emp) != 0) {
-            $a = 0;
-            while ($row = mysqli_fetch_assoc($emp)) {
-                echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
-                $parametro[$row["parametro"]]=$row["valor"];
-                $a++;
-            }
-
-            for ($x=$a; $x <count($param) ; $x++) { 
-                echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$param[$x].'" value="'.$valor[$x].'" /></td>';
-            }
-
-            var_dump($parametro);
-        }else{
-            while ($row = mysqli_fetch_assoc($tr)) {
-                echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
-                $parametro[$row["parametro"]]=$row["valor"];
-                
-            }
-            var_dump($parametro);
-        }
-
-       /*  while ($row = mysqli_fetch_assoc($tr)) {
-            echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
-        } */
-
-        /* echo '<td><input type="button" id="'.$rutEmpresas[$i].'" name="'.$rutEmpresas[$i].'" value="Modificar Parametros" onclick="guardarParam(\''.$rutEmpresas[$i].'\')"/></td>'; */
-        echo '<input type="hidden" id="rutEmpresa'.$i.'" value="'.$rutEmpresas[$i].'"/>';
-        echo '<td><input type="button" class="btnModificarParam" id="'.$i.'" name="'.$i.'" value="Modificar Parametros" /></td>';
-        echo "</tr>";
-        ?>
         </tr>
                 <th># N°DTE</th>
                 <th># Tipo DTE</th>
                 <th># Folio</th>              
                 <th># Fecha de Emision</th>
                 <th># Fecha de Pago</th>
-                <th># Monto Neto</th>
-                <th># Monto Exento</th>
                 <th># Monto Total</th>
                 <th>¿Aceptar compra?</th>
                 <th>Observacion</th>
-                <th># Monto Retenido</th>
+                <!-- <th># Monto Retenido</th>
                 <th>* Monto A Financiar</th>
                 <th>Diferencia de Precio</th>
                 <th>Gastos Y Comisiones</th>
                 <th>Monto de IVA</th>
                 <th>Dias</th>
-                <th>Costo Financiero</th>
+                <th>Costo Financiero</th> -->
             <?php
                 $sql = 'SELECT * FROM sl_grand_table WHERE n_operacion = 3213 and rut_receptor= \''.$rutEmpresas[$i].'\'';
                 $response = mysqli_query($conn,$sql);
+                echo "</br>";
+                echo '<center><p>'.$rutEmpresas[$i].'</p></center>';
                 if (mysqli_num_rows($response) > 0) {
                     while ($row = mysqli_fetch_assoc($response)) {
                         echo '<tr>
                         <td>'.$row["nro_dte"].'</td>
                         <td>'.$row["tipo_dte"].'</td>
-                        <td>'.$row["folio"].'</td>
-                        
+                        <td>'.$row["folio"].'</td>                    
                         <td>'.$row["fecha_emision"].'</td>
                         <td>'.$row["fecha_pago"].'</td>
-                        <td>'.$row["monto_neto"].'</td>
-                        <td>'.$row["monto_exento"].'</td>
-                        <td>'.$row["monto_total"].'</td>
+                        <td><input class="montoTotal" name="'.str_replace(".","",$rutEmpresas[$i]).'" id="'.$row["folio"].'" value="'.$row["monto_total"].'" readOnly/></td>
                         <td>
                         <label class="radio-inline">
                         <input type="radio" id="compraSi'.$row["folio"].'" onclick="enabl('.$row["folio"].','.$row["monto_total"].')" name="compra'.$row["folio"].'" value="Si" checked>SI
@@ -238,20 +160,192 @@ include('connection.php');
                         <input type="radio" id="compraNo'.$row["folio"].'" onclick="disabl('.$row["folio"].')" name="compra'.$row["folio"].'" value="No">NO
                         </label>
                         </td>
-                        <td><textarea name="obs'.$row["folio"].'" id="obs'.$row["folio"].'" cols="20" rows="3" disabled></textarea></td>
-                        <td>'.$row["monto_total"]*((100-$parametro["Retencion"])/100).'</td>
+                        <td><textarea name="obs'.$row["folio"].'" id="obs'.$row["folio"].'" cols="20" rows="3" disabled></textarea></td>';
+                        /* <td>'.$row["monto_total"]*((100-$parametro["Retencion"])/100).'</td>
                         <td>'.$row["monto_total"]*($parametro["Retencion"]/100).'</td>                        
                         <input type="hidden" name="DTE'.$row["folio"].'" id="DTE'.$row["folio"].'" value="'.$row["monto_total"].'"/>
                         <td><input type="text" name="difPre'.$row["folio"].'" id="difPre'.$row["folio"].'" value="'.$row["diferencia_precio_dte"].'"/></td>
-                        <td><input type="text" name="gasCom'.$row["folio"].'" id="gasCom'.$row["folio"].'" value="'.$row["gasto_comision_dte"].'"/></td>
+                        <td><input type="text" name="gasCom'.$row["folio"].'" id="gasCom'.$row["folio"].'" value="'.$parametro["Comision"]*$row["monto_total"]*($parametro["Dias"]/30).'"/></td>
                         <td><input type="text" name="monIVA'.$row["folio"].'" id="monIVA'.$row["folio"].'" value="'.$row["monto_iva_dte"].'"/></td>
-                        <td><input type="text" /></td>
+                        <td><input type="text"/></td>
                         <td><input type="text" name="costFin'.$row["folio"].'" id="costFin'.$row["folio"].'" value="'.$row["costo_finan_dte"].'"/></td>
-                        </tr>';
+                        </tr>'; */
                     }
                     echo '</br>';
                 }
-            ?>           
+            ?>
+
+            <!-- <?php
+            $sql = "Select * from sl_parametro_sistema";
+            $th = mysqli_query($conn,$sql);
+            $test = mysqli_query($conn,$sql);
+            $tr = mysqli_query($conn,$sql);
+            /* echo '<th>Rut Receptor + Nombre Receptor</th>';  */
+            while ($row = mysqli_fetch_assoc($th)) {
+                echo '<th>'.$row["parametro"].'</th>';
+            }
+            echo "<tr>";
+            /* echo '<td>'.$rutEmpresas[$i].'</td>'; */
+    
+            $param = [];
+            $valor = [];
+            $f = 0;
+    
+            while ($row = mysqli_fetch_assoc($test)) {
+                $valor[$f] = $row["valor"];
+                $param[$f] = $row["parametro"];
+                $f++;
+            }
+    
+            //var_dump($arr[3]);
+    
+            $sql = 'Select * from sl_parametro_empresa where rut_empresa = \''.$rutEmpresas[$i].'\'';
+            $emp = mysqli_query($conn,$sql);
+              
+            /* var_dump($emp); */
+            /* if (mysqli_num_rows($emp) != 0) {
+                $a = 0;
+                while ($row = mysqli_fetch_assoc($emp)) {
+                    echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
+                    $a++;
+                }
+    
+                for ($x=$a; $x <count($param) ; $x++) { 
+                    echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$param[$x].'" value="'.$valor[$x].'" /></td>';
+                }
+    
+            }else{
+                while ($row = mysqli_fetch_assoc($tr)) {
+                    echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
+                }
+            } */
+            $parametro = [];
+            if (mysqli_num_rows($emp) != 0) {
+                $a = 0;
+                while ($row = mysqli_fetch_assoc($emp)) {
+                    echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
+                    $parametro[$row["parametro"]]=$row["valor"];
+                    $a++;
+                }
+    
+                for ($x=$a; $x <count($param) ; $x++) { 
+                    echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$param[$x].'" value="'.$valor[$x].'" /></td>';
+                }
+    
+                //var_dump($parametro);
+            }else{
+                while ($row = mysqli_fetch_assoc($tr)) {
+                    echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
+                    $parametro[$row["parametro"]]=$row["valor"];
+                    
+                }
+                //var_dump($parametro);
+            }
+    
+           /*  while ($row = mysqli_fetch_assoc($tr)) {
+                echo '<td><input class="param" type="text" name="'."parametros".$i.'" id="'.$row["parametro"].'" value="'.$row["valor"].'" /></td>';
+            } */
+    
+            /* echo '<td><input type="button" id="'.$rutEmpresas[$i].'" name="'.$rutEmpresas[$i].'" value="Modificar Parametros" onclick="guardarParam(\''.$rutEmpresas[$i].'\')"/></td>'; */
+            echo '<input type="hidden" id="rutEmpresa'.$i.'" value="'.$rutEmpresas[$i].'"/>';
+        echo '<td><center><input type="button" class="btnModificarParam" id="'.$i.'" name="'.$i.'" value="Simular" /></center></td>';
+        echo "</tr>";
+            ?>            -->
+        </table>
+        <table border="solid">
+        <!-- <th><center>Simulacion</center></th> -->
+            <tr>
+            <td colspan="2"><center>Simulacion</center></td>
+            </tr>
+
+            <tr>
+            <td>Monto Bruto</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.str_replace(".","",$rutEmpresas[$i]).'" value="" readOnly/></td>';
+            ?>
+            </tr>
+
+            <!-- <tr>
+            <td>Anticipo</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr>
+
+            <tr>
+            <td>Monto Retenido</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr>
+
+            <tr>
+            <td>Monto A Financiar</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr>
+
+            <tr>
+            <td>Gasto Legal / Notaria / Notificación</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr>
+            
+            <tr>
+            <td>Comisión RC</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr>
+
+            <tr>
+            <td>Gastos Operacion</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr>
+
+            <tr>
+            <td>IVA</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr>
+
+            <tr>
+            <td>Dias</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr>
+
+            <tr>
+            <td>Tasa Interes Mensual</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr>
+
+            <tr>
+            <td>Interes</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr>
+
+            <tr>
+            <td>Monto Liquido</td>
+            <?php
+            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.$rutEmpresas[$i].'" value=""/></td>';
+            ?>
+            </tr> -->
+            
+            <td colspan="2"><center><button>Simular</button></center></td>
+
+           
+
         </table>
         <?php } ?>
         <!-- Tabla por cada rut de receptor -->

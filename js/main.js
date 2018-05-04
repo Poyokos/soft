@@ -1,10 +1,37 @@
 $(document).ready(function() {
     montLiquid();
     calcularCotizaccion();
+    montoTotal();
     /* $("#trObs").hide(); */
     $("#difPrecio, #gastoCom, #montoIVA, #costoFinan").on("keyup", function() {
         montLiquid();
     });
+
+   /*  $("#btnPrueba").click(function(){
+        var arr = $(".montoTotal").val();
+        alert("AAAAA");
+        console.log(arr);
+    }); */
+
+    function montoTotal() {
+        var valor = 0;
+        var total = 0;
+        $('.montoTotal').each (function() {
+            /* id = "#mntBruto"+$(this).attr("name"); */
+            valor = $(this).val();
+            total = $("#mntBruto"+$(this).attr("name")).val();
+            total = Number(total) + Number(valor);
+            console.log(total);
+            $("#mntBruto"+$(this).attr("name")).val(total);
+            /* a = $(this).attr("name"); */
+          /* values.push($(this).val()); */
+        });
+        
+        //$("#mntBruto98.444.321-6").val("3");
+        /* #mntBruto78.443.221-6 */
+
+        /* console.log(id); */
+    }
 
     $("#btnSubmit").click(function(){
         alert("Simulacion guardada");
@@ -68,6 +95,7 @@ function guardarValor(id){
     var valor = document.getElementById('finan'+id).value;
     document.getElementById('DTE'+id).value = valor;
 }
+
         
 /* tot = tot.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
     tot = tot.split('').reverse().join('').replace(/^[\.]/, ''); */
