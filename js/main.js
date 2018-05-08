@@ -13,26 +13,6 @@ $(document).ready(function() {
         console.log(arr);
     }); */
 
-    function montoTotal() {
-        var valor = 0;
-        var total = 0;
-        $('.montoTotal').each (function() {
-            /* id = "#mntBruto"+$(this).attr("name"); */
-            valor = $(this).val();
-            total = $("#mntBruto"+$(this).attr("name")).val();
-            total = Number(total) + Number(valor);
-            console.log(total);
-            $("#mntBruto"+$(this).attr("name")).val(total);
-            /* a = $(this).attr("name"); */
-          /* values.push($(this).val()); */
-        });
-        
-        //$("#mntBruto98.444.321-6").val("3");
-        /* #mntBruto78.443.221-6 */
-
-        /* console.log(id); */
-    }
-
     $("#btnSubmit").click(function(){
         alert("Simulacion guardada");
     });
@@ -96,6 +76,43 @@ function guardarValor(id){
     document.getElementById('DTE'+id).value = valor;
 }
 
+function montoTotal() {
+    var valor = 0;
+    var total = 0;
+    $('.montoTotal').each (function() {
+        id = $(this).attr("name");
+        valor = $(this).val();
+        total = $("#mntBruto"+$(this).attr("name")).val();
+        total = Number(total) + Number(valor);
+        $("#mntBruto"+$(this).attr("name")).val(total);
+    });
+}
+
+function disabl(valor){
+    var value = valor;
+    /* name = $("#"+value).attr("name"); */
+    $("#"+value).val(0);
+    $("#"+value).prop("disabled",true);
+    $("#obs"+value).prop("disabled",false);
+    /* $("#mntBruto"+name).val(0); */
+    $('.mntBruto').each (function() {
+        $(this).val(0);
+    });
+    montoTotal();
+}
+
+function enabl(valor,monto){
+    var value = valor;
+    $("#obs"+value).val("");
+    $("#obs"+value).prop("disabled",true);
+    $("#"+value).val(monto);
+    $("#"+value).prop("disabled",false);
+    /* $("#mntBruto"+name).val(0); */
+    $('.mntBruto').each (function() {
+        $(this).val(0);
+    });
+    montoTotal();
+}
         
 /* tot = tot.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
     tot = tot.split('').reverse().join('').replace(/^[\.]/, ''); */
@@ -140,7 +157,7 @@ function montLiquid(){
 }
 
 
-function disabl(valor){
+/* function disabl(valor){
     var value = valor;
     document.getElementById('finan'+valor).value = "";
     document.getElementById('obs'+valor).disabled = false;
@@ -155,7 +172,9 @@ function enabl(valor,monto){
     document.getElementById('finan'+valor).disabled = false;
     document.getElementById('finan'+valor).value = monto;
     montLiquid();
-}
+} */
+
+
 
 function soloNumeros(e){
     var key = window.Event ? e.which : e.keyCode

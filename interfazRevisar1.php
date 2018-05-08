@@ -261,7 +261,7 @@ include('connection.php');
             <tr>
             <td>Monto Bruto</td>
             <?php
-            echo '<td><input name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.str_replace(".","",$rutEmpresas[$i]).'" value="" readOnly/></td>';
+            echo '<td><input class="mntBruto" name="mntBruto'.$rutEmpresas[$i].'" id="mntBruto'.str_replace(".","",$rutEmpresas[$i]).'" value="" readOnly/></td>';
             ?>
             </tr>
 
